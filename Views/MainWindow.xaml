@@ -1,0 +1,531 @@
+<Window x:Class="MouseToVJoy.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MouseToVJoy"
+        xmlns:converters="clr-namespace:MouseToVJoy.Converters"
+        mc:Ignorable="d"
+        Title="MouseToVJoy" Height="800" Width="760"
+        MinHeight="640" MinWidth="680"
+        WindowStartupLocation="CenterScreen" Background="#F5F5F7">
+
+    <Window.Resources>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" /> 
+    </Window.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="MouseToVJoy Controller"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Foreground="#242424"
+                       HorizontalAlignment="Center"
+                       Grid.Row="0"/>
+
+            <StackPanel Grid.Row="1" Margin="0,18,0,18">
+                <TextBlock Text="{Binding StatusMessage}"
+                           FontSize="13"
+                           Foreground="#555"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"
+                           Margin="0,0,0,14"/>
+
+                <TextBlock Text="Virtual steering position"
+                           FontSize="12"
+                           Foreground="#666"
+                           Margin="0,0,0,5"
+                           HorizontalAlignment="Center"/>
+                <ProgressBar Value="{Binding VirtualWheelValue, Mode=OneWay}"
+                             Minimum="1"
+                             Maximum="32768"
+                             Height="15"
+                             Foreground="#007ACC"
+                             Background="#E0E0E0"/>
+
+                <Grid Margin="0,12,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="18"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Throttle axis"
+                                   FontSize="12"
+                                   Foreground="#666"
+                                   Margin="0,0,0,5"
+                                   HorizontalAlignment="Center"/>
+                        <ProgressBar Value="{Binding VirtualThrottleValue, Mode=OneWay}"
+                                     Minimum="1"
+                                     Maximum="32768"
+                                     Height="15"
+                                     Foreground="#2E7D32"
+                                     Background="#E0E0E0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Brake axis"
+                                   FontSize="12"
+                                   Foreground="#666"
+                                   Margin="0,0,0,5"
+                                   HorizontalAlignment="Center"/>
+                        <ProgressBar Value="{Binding VirtualBrakeValue, Mode=OneWay}"
+                                     Minimum="1"
+                                     Maximum="32768"
+                                     Height="15"
+                                     Foreground="#C62828"
+                                     Background="#E0E0E0"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
+                    <Button Content="START"
+                            Command="{Binding StartCommand}"
+                            Width="110"
+                            Height="36"
+                            Margin="0,0,14,0"
+                            Background="#2E7D32"
+                            Foreground="White"
+                            FontWeight="Bold"/>
+                    <Button Content="STOP"
+                            Command="{Binding StopCommand}"
+                            Width="110"
+                            Height="36"
+                            Background="#C62828"
+                            Foreground="White"
+                            FontWeight="Bold"/>
+                </StackPanel>
+            </StackPanel>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="18"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <GroupBox Header="Basic Settings" Grid.Column="0" Padding="14" BorderBrush="#D0D0D0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <CheckBox Content="Enable throttle"
+                                      IsChecked="{Binding EnableThrottle, Mode=TwoWay}"
+                                      Margin="0,0,18,0"/>
+                            <CheckBox Content="Enable brake"
+                                      IsChecked="{Binding EnableBrake, Mode=TwoWay}"/>
+                        </StackPanel>
+
+                        <CheckBox Content="Right click pedal mode"
+                                  IsChecked="{Binding EnableRightClickPedalMode, Mode=TwoWay}"
+                                  IsEnabled="{Binding ArePedalsEnabled}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="Hold right mouse button to center steering while controlling throttle/brake."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"
+                                   Margin="22,0,0,12"/>
+
+                        <TextBlock Text="{Binding PedalSensitivity, StringFormat=Pedal sensitivity: {0:F0}}"
+                                   FontSize="12"
+                                   Foreground="#333"
+                                   IsEnabled="{Binding ArePedalsEnabled}"/>
+                        <Slider Minimum="1"
+                                Maximum="300"
+                                TickFrequency="10"
+                                Value="{Binding PedalSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding ArePedalsEnabled}"
+                                Margin="0,2,0,8"/>
+
+                        <TextBlock Text="{Binding MousePedalDeadZone, StringFormat=Mouse pedal dead zone at 0%: {0:P0}}"
+                                   FontSize="12"
+                                   Foreground="#333"
+                                   IsEnabled="{Binding ArePedalsEnabled}"/>
+                        <Slider Minimum="0"
+                                Maximum="0.5"
+                                TickFrequency="0.01"
+                                Value="{Binding MousePedalDeadZone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding ArePedalsEnabled}"
+                                Margin="0,2,0,4"/>
+                        <TextBlock
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,12" Height="59"><Run Text="When the pedals are at 0% this area gives room for error. The more area you allocate, the easier you can steer without accidentally pressing any pedal. Recommended when you use mouse for 1 pedal(throttle/brake)."/><LineBreak/><Run/></TextBlock>
+
+                        <TextBlock Text="{Binding WheelSensitivity, StringFormat=Steering sensitivity: {0:F2}x}"
+                                   FontSize="12"
+                                   Foreground="#333"/>
+                        <Slider Minimum="0.05"
+                                Maximum="3"
+                                TickFrequency="0.1"
+                                Value="{Binding WheelSensitivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0,2,0,4"/>
+                        <TextBlock Text="Changes how fast the virtual wheel moves. Full steering range remains available."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,12"/>
+
+                        <CheckBox Content="Lock cursor to screen center"
+                                  IsChecked="{Binding EnableCenterLockedCursor, Mode=TwoWay}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="Experimental: keeps the real cursor fixed in the center while Raw Input drives a virtual cursor. This can feel cleaner in-game, but may introduce cursor teleport artifacts on some systems."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"
+                                   Margin="22,0,0,12"/>
+
+                        <CheckBox Content="Wheel auto-centering"
+                                  IsChecked="{Binding EnableWheelCentering, Mode=TwoWay}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="Slowly returns steering to center when the mouse is not moving."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"
+                                   Margin="22,0,0,8"/>
+
+                        <TextBlock Text="{Binding WheelReturnTimeSeconds, StringFormat=Center return time: {0:F2}s}"
+                                   FontSize="12"
+                                   Foreground="#333"/>
+                        <Slider Minimum="0.1"
+                                Maximum="60"
+                                TickFrequency="1"
+                                Value="{Binding WheelReturnTimeSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0,2,0,4"/>
+                        
+                        
+                        
+                        <CheckBox Content="Brake auto-resetting"
+                                  IsChecked="{Binding EnableBrakeResetting, Mode=TwoWay}"
+                                  IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled, Converter={StaticResource InverseBooleanConverter}}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="Slowly returns brake to the starting point when the brake axis is not moving.(When using only mouse brake without mouse throttle)"
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"
+                                   Margin="22,0,0,8"/>
+
+                        <TextBlock Text="{Binding BrakeReturnTimeSeconds, StringFormat=Resetting return time: {0:F2}s}"
+                                   FontSize="12"
+                                   Foreground="#333"/>
+                        <Slider Minimum="0.1"
+                                Maximum="60"
+                                TickFrequency="1"
+                                Value="{Binding BrakeReturnTimeSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled, Converter={StaticResource InverseBooleanConverter}}"
+                                Margin="0,2,0,0"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Advanced Assists" Grid.Column="2" Padding="14" BorderBrush="#D0D0D0">
+                    <StackPanel>
+                        <CheckBox Content="Steering dampening"
+                                  IsChecked="{Binding EnableSteeringDampening, Mode=TwoWay}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="Filters sudden steering jumps. 0.00 follows the mouse immediately; higher values make steering smoother but more delayed."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"
+                                   Margin="22,0,0,6"/>
+                        <TextBlock Text="{Binding SteeringDampening, StringFormat=Dampening: {0:F2}}"
+                                   FontSize="12"
+                                   Foreground="#333"/>
+                        <Slider Minimum="0"
+                                Maximum="0.95"
+                                TickFrequency="0.05"
+                                Value="{Binding SteeringDampening, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0,2,0,12"/>
+
+                        <CheckBox Content="Brake assist mode"
+                                  IsChecked="{Binding EnableBrakeAssist, Mode=TwoWay}"
+                                  IsEnabled="{Binding EnableBrake}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="When brake input is above the threshold, steering is gently pulled toward center. This helps keep the car stable during hard braking."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"
+                                   Margin="22,0,0,6"/>
+                        <TextBlock Text="{Binding BrakeAssistThreshold, StringFormat=Brake threshold: {0:P0}}"
+                                   FontSize="12"
+                                   Foreground="#333"
+                                   IsEnabled="{Binding EnableBrake}"/>
+                        <TextBlock Text="The brake amount needed before brake assist starts working."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"/>
+                        <Slider Minimum="0"
+                                Maximum="1"
+                                TickFrequency="0.05"
+                                Value="{Binding BrakeAssistThreshold, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding EnableBrake}"
+                                Margin="0,2,0,6"/>
+                        <TextBlock Text="{Binding BrakeAssistStrength, StringFormat=Assist strength: {0:P0}}"
+                                   FontSize="12"
+                                   Foreground="#333"
+                                   IsEnabled="{Binding EnableBrake}"/>
+                        <TextBlock Text="How strongly the wheel is pulled toward center after the threshold is reached."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"/>
+                        <Slider Minimum="0"
+                                Maximum="1"
+                                TickFrequency="0.05"
+                                Value="{Binding BrakeAssistStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding EnableBrake}"
+                                Margin="0,2,0,6"/>
+                        <TextBlock Text="{Binding BrakeAssistHold, StringFormat=Post-brake assist hold: {0:P0}}"
+                                   FontSize="12"
+                                   Foreground="#333"
+                                   IsEnabled="{Binding EnableBrake}"/>
+                        <TextBlock Text="How much brake assist is allowed to remain after you release the brake. 0% means no sticky steering after braking."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"/>
+                        <Slider Minimum="0"
+                                Maximum="1"
+                                TickFrequency="0.05"
+                                Value="{Binding BrakeAssistHold, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding EnableBrake}"
+                                Margin="0,2,0,12"/>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+
+            <GroupBox Header="Keyboard Pedals" Grid.Row="3" Padding="14" Margin="0,18,0,0" BorderBrush="#D0D0D0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="18"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- THROTTLE COLUMN -->
+                    <StackPanel Grid.Column="0">
+                        <CheckBox Content="Throttle on keyboard" IsChecked="{Binding EnableKeyboardThrottle, Mode=TwoWay}" IsEnabled="{Binding EnableThrottle}" Margin="0,0,0,4"/>
+                        <TextBlock Text="Throttle key" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
+                        <ComboBox ItemsSource="{Binding KeyboardKeyOptions}" SelectedItem="{Binding KeyboardThrottleKey, Mode=TwoWay}" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}" Height="28" Margin="0,2,0,8"/>
+
+                        <TextBlock Text="{Binding KeyboardThrottleLagUpSeconds, StringFormat=Lag Up: {0:F2}s}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
+                        <Slider Minimum="0" Maximum="5" TickFrequency="0.05" Value="{Binding KeyboardThrottleLagUpSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}" Margin="0,2,0,8"/>
+
+                        <TextBlock Text="{Binding KeyboardThrottleLagDownSeconds, StringFormat=Lag Down: {0:F2}s}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
+                        <Slider Minimum="0" Maximum="5" TickFrequency="0.05" Value="{Binding KeyboardThrottleLagDownSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}" Margin="0,2,0,12"/>
+
+                        <CheckBox Content="Use custom throttle curve" IsChecked="{Binding EnableKeyboardThrottleCurve, Mode=TwoWay}" Margin="0,0,0,4" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
+                        <Button Content="Edit Throttle Curve" Command="{Binding OpenThrottleCurveEditorCommand}" Height="26" HorizontalAlignment="Left" Width="140" Margin="0,0,0,12" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
+
+                        <!-- THROTTLE STEERING ASSIST -->
+                        <TextBlock Text="--- Steering Assist (Traction) ---" FontSize="11" Foreground="#666" FontWeight="SemiBold" Margin="0,4,0,4"/>
+                        <CheckBox Content="Reduce throttle on steer" IsChecked="{Binding EnableKeyboardThrottleSteeringAssist, Mode=TwoWay}" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding KeyboardThrottleSteeringAssistStrength, StringFormat=Reduction Intensity: {0:P0}}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
+                        <Slider Minimum="0" Maximum="2" TickFrequency="0.05" Value="{Binding KeyboardThrottleSteeringAssistStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}" Margin="0,2,0,8"/>
+
+                        <TextBlock Text="{Binding KeyboardThrottleAssistIdleThreshold, StringFormat=Required Idle Pause: {0:F1}s}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
+                        <Slider Minimum="0.1" Maximum="10" TickFrequency="0.1" Value="{Binding KeyboardThrottleAssistIdleThreshold, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}" Margin="0,2,0,8"/>
+
+                        <TextBlock Text="{Binding KeyboardThrottleAssistDuration, StringFormat=Assist Duration: {0:F1}s}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
+                        <Slider Minimum="0.1" Maximum="10" TickFrequency="0.1" Value="{Binding KeyboardThrottleAssistDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}" Margin="0,2,0,0"/>
+                    </StackPanel>
+
+                    <!-- BRAKE COLUMN -->
+                    <StackPanel Grid.Column="2">
+                        <CheckBox Content="Brake on keyboard" IsChecked="{Binding EnableKeyboardBrake, Mode=TwoWay}" IsEnabled="{Binding EnableBrake}" Margin="0,0,0,4"/>
+                        <TextBlock Text="Brake key" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}"/>
+                        <ComboBox ItemsSource="{Binding KeyboardKeyOptions}" SelectedItem="{Binding KeyboardBrakeKey, Mode=TwoWay}" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}" Height="28" Margin="0,2,0,8"/>
+
+                        <TextBlock Text="{Binding KeyboardBrakeLagUpSeconds, StringFormat=Lag Up: {0:F2}s}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}"/>
+                        <Slider Minimum="0" Maximum="5" TickFrequency="0.05" Value="{Binding KeyboardBrakeLagUpSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}" Margin="0,2,0,8"/>
+
+                        <TextBlock Text="{Binding KeyboardBrakeLagDownSeconds, StringFormat=Lag Down: {0:F2}s}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}"/>
+                        <Slider Minimum="0" Maximum="5" TickFrequency="0.05" Value="{Binding KeyboardBrakeLagDownSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}" Margin="0,2,0,12"/>
+
+                        <CheckBox Content="Use custom brake curve" IsChecked="{Binding EnableKeyboardBrakeCurve, Mode=TwoWay}" Margin="0,0,0,4" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}"/>
+                        <Button Content="Edit Brake Curve" Command="{Binding OpenBrakeCurveEditorCommand}" Height="26" HorizontalAlignment="Left" Width="140" Margin="0,0,0,12" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}"/>
+
+                        <!-- BRAKE STEERING ASSIST -->
+                        <TextBlock Text="--- Steering Assist (Anti-Understeer) ---" FontSize="11" Foreground="#666" FontWeight="SemiBold" Margin="0,4,0,4"/>
+                        <CheckBox Content="Reduce brake on steer" IsChecked="{Binding EnableKeyboardBrakeSteeringAssist, Mode=TwoWay}" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding KeyboardBrakeSteeringAssistStrength, StringFormat=Reduction Intensity: {0:P0}}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}"/>
+                        <Slider Minimum="0" Maximum="2" TickFrequency="0.05" Value="{Binding KeyboardBrakeSteeringAssistStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}" Margin="0,2,0,8"/>
+                        <TextBlock Text="When holding brake, turning the wheel reduces braking pressure to free up grip for steering." FontSize="11" Foreground="#666" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="Advanced Braking Stability" Grid.Row="4" Padding="14" Margin="0,18,0,0" BorderBrush="#D0D0D0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="18"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <CheckBox Content="X deadzone while braking"
+                                  IsChecked="{Binding EnableBrakeXDeadzone, Mode=TwoWay}"
+                                  IsEnabled="{Binding EnableBrake}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="If you are braking hard and steering is near center, small left/right mouse movement is ignored."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"
+                                   Margin="22,0,0,6"/>
+                        <TextBlock Text="{Binding BrakeXDeadzone, StringFormat=Deadzone width: {0:P0}}"
+                                   FontSize="12"
+                                   Foreground="#333"
+                                   IsEnabled="{Binding EnableBrake}"/>
+                        <Slider Minimum="0"
+                                Maximum="0.5"
+                                TickFrequency="0.02"
+                                Value="{Binding BrakeXDeadzone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding EnableBrake}"
+                                Margin="0,2,0,10"/>
+
+                        <CheckBox Content="Timed X deadzone"
+                                  IsChecked="{Binding EnableTimedBrakeXDeadzone, Mode=TwoWay}"
+                                  IsEnabled="{Binding EnableBrake}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="Keeps X deadzone active only for the first part of hard braking. After the timer ends, you can steer normally while still braking."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"
+                                   Margin="22,0,0,6"/>
+                        <TextBlock Text="{Binding BrakeXDeadzoneDurationSeconds, StringFormat=Deadzone duration: {0:F2}s}"
+                                   FontSize="12"
+                                   Foreground="#333"
+                                   IsEnabled="{Binding EnableBrake}"/>
+                        <Slider Minimum="0.05"
+                                Maximum="5"
+                                TickFrequency="0.05"
+                                Value="{Binding BrakeXDeadzoneDurationSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding EnableBrake}"
+                                Margin="0,2,0,14"/>
+
+                        <CheckBox Content="Full throttle hold"
+                                  IsChecked="{Binding EnableFullThrottleHold, Mode=TwoWay}"
+                                  IsEnabled="{Binding EnableThrottle}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="When throttle is already at 100%, small downward mouse movement is ignored so you do not lose throttle while steering."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"
+                                   Margin="22,0,0,6"/>
+                        <TextBlock Text="{Binding FullThrottleHoldDeadzone, StringFormat=Hold deadzone: {0:P0}}"
+                                   FontSize="12"
+                                   Foreground="#333"
+                                   IsEnabled="{Binding EnableThrottle}"/>
+                        <Slider Minimum="0"
+                                Maximum="0.5"
+                                TickFrequency="0.02"
+                                Value="{Binding FullThrottleHoldDeadzone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding EnableThrottle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <CheckBox Content="Trail braking mode"
+                                  IsChecked="{Binding EnableTrailBraking, Mode=TwoWay}"
+                                  IsEnabled="{Binding EnableBrake}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="Lets brake stability fade out smoothly while you release the brake. It helps during corner entry, but too much can make steering feel sticky."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"
+                                   Margin="22,0,0,6"/>
+                        <TextBlock Text="{Binding TrailBrakingRelease, StringFormat=Assist release speed: {0:F2}}"
+                                   FontSize="12"
+                                   Foreground="#333"
+                                   IsEnabled="{Binding EnableBrake}"/>
+                        <TextBlock Text="Higher values remove the remaining brake stability faster. Lower values keep it active for longer after brake release."
+                                   FontSize="11"
+                                   Foreground="#666"
+                                   TextWrapping="Wrap"/>
+                        <Slider Minimum="0"
+                                Maximum="0.5"
+                                TickFrequency="0.01"
+                                Value="{Binding TrailBrakingRelease, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding EnableBrake}"/>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="Preset Slots" Grid.Row="5" Padding="14" Margin="0,18,0,0" BorderBrush="#D0D0D0">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ComboBox Grid.Column="0"
+                                  ItemsSource="{Binding Presets}"
+                                  SelectedItem="{Binding SelectedPreset, Mode=TwoWay}"
+                                  DisplayMemberPath="DisplayName"
+                                  Height="30"
+                                  Margin="0,0,10,0"/>
+
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding PresetNameInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="30"
+                                 Margin="0,0,10,0"
+                                 VerticalContentAlignment="Center"/>
+
+                        <Button Grid.Column="2"
+                                Content="Load"
+                                Command="{Binding LoadPresetCommand}"
+                                Width="72"
+                                Height="30"
+                                Margin="0,0,8,0"/>
+
+                        <Button Grid.Column="3"
+                                Content="Update"
+                                Command="{Binding UpdatePresetCommand}"
+                                Width="72"
+                                Height="30"
+                                Margin="0,0,8,0"/>
+
+                        <Button Grid.Column="4"
+                                Content="Rename"
+                                Command="{Binding RenamePresetCommand}"
+                                Width="72"
+                                Height="30"
+                                Margin="0,0,8,0"/>
+
+                        <Button Grid.Column="5"
+                                Content="Reset"
+                                Command="{Binding ResetPresetCommand}"
+                                Width="72"
+                                Height="30"/>
+                    </Grid>
+
+                    <TextBlock Text="{Binding PresetFeedbackMessage}"
+                               FontSize="12"
+                               Foreground="#2E7D32"
+                               TextWrapping="Wrap"
+                               Margin="0,10,0,0"/>
+                </StackPanel>
+            </GroupBox>
+            <Button Content="Help / About"
+                    Style="{StaticResource RoundedButton}"
+                    FontSize="14"
+                    Margin="10 10 0 0"
+                    Width="150"
+                    Height="40"
+                    Click="HelpAboutButton_Click"/>
+
+        </Grid>
+    </ScrollViewer>
+</Window>
