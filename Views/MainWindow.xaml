@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MouseToVJoy"
         xmlns:converters="clr-namespace:MouseToVJoy.Converters"
         mc:Ignorable="d"
-        Title="MouseToVJoy" Height="800" Width="760"
+        Title="MouseToVJoy" Height="750" Width="760"
         MinHeight="640" MinWidth="680"
         WindowStartupLocation="CenterScreen" Background="#F5F5F7">
 
@@ -323,7 +323,7 @@
                         <ComboBox ItemsSource="{Binding KeyboardKeyOptions}" SelectedItem="{Binding KeyboardThrottleKey, Mode=TwoWay}" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}" Height="28" Margin="0,2,0,8"/>
 
                         <!-- THROTTLE SCROLL ADJUST -->
-                        <TextBlock Text="--- Scroll Wheel Adjust ---" FontSize="11" Foreground="#666" FontWeight="SemiBold" Margin="0,4,0,4"/>
+                        <TextBlock Text="--- Scroll Wheel Adjust &amp; General Throttle Settings ---" FontSize="11" Foreground="#666" FontWeight="SemiBold" Margin="0,4,0,4"/>
                         <TextBlock Text="{Binding KeyboardThrottleLimit, StringFormat=Base Limit: {0:P0}}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
                         <Slider Minimum="0.01" Maximum="1" TickFrequency="0.05" Value="{Binding KeyboardThrottleLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}" Margin="0,2,0,8"/>
 
@@ -338,6 +338,9 @@
 
                         <TextBlock Text="{Binding KeyboardThrottleLagDownSeconds, StringFormat=Lag Down: {0:F2}s}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
                         <Slider Minimum="0" Maximum="5" TickFrequency="0.05" Value="{Binding KeyboardThrottleLagDownSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}" Margin="0,2,0,12"/>
+
+                        <TextBlock Text="{Binding KeyboardSteeringThrottleLagUpSlowingEffect, StringFormat=Lag Up Speed Reduction: {0:F2}%}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
+                        <Slider Minimum="0" Maximum="50" TickFrequency="1" Value="{Binding KeyboardSteeringThrottleLagUpSlowingEffect, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}" Margin="0,2,0,12"/>
 
                         <CheckBox Content="Use custom throttle curve" IsChecked="{Binding EnableKeyboardThrottleCurve, Mode=TwoWay}" Margin="0,0,0,4" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
                         <Button Content="Edit Throttle Curve" Command="{Binding OpenThrottleCurveEditorCommand}" Height="26" HorizontalAlignment="Left" Width="140" Margin="0,0,0,12" IsEnabled="{Binding IsKeyboardThrottleSettingsEnabled}"/>
@@ -362,7 +365,7 @@
                         <ComboBox ItemsSource="{Binding KeyboardKeyOptions}" SelectedItem="{Binding KeyboardBrakeKey, Mode=TwoWay}" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}" Height="28" Margin="0,2,0,8"/>
 
                         <!-- BRAKE SCROLL ADJUST -->
-                        <TextBlock Text="--- Scroll Wheel Adjust ---" FontSize="11" Foreground="#666" FontWeight="SemiBold" Margin="0,4,0,4"/>
+                        <TextBlock Text="--- Scroll Wheel Adjust &amp; General Brake Settings ---" FontSize="11" Foreground="#666" FontWeight="SemiBold" Margin="0,4,0,4"/>
                         <TextBlock Text="{Binding KeyboardBrakeLimit, StringFormat=Base Limit: {0:P0}}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}"/>
                         <Slider Minimum="0.01" Maximum="1" TickFrequency="0.05" Value="{Binding KeyboardBrakeLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}" Margin="0,2,0,8"/>
 
@@ -377,6 +380,9 @@
 
                         <TextBlock Text="{Binding KeyboardBrakeLagDownSeconds, StringFormat=Lag Down: {0:F2}s}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}"/>
                         <Slider Minimum="0" Maximum="5" TickFrequency="0.05" Value="{Binding KeyboardBrakeLagDownSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}" Margin="0,2,0,12"/>
+
+                        <TextBlock Text="{Binding KeyboardSteeringBrakeLagUpSlowingEffect, StringFormat=Lag Up Speed Reduction: {0:F2}%}" FontSize="12" Foreground="#333" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}"/>
+                        <Slider Minimum="0" Maximum="50" TickFrequency="1" Value="{Binding KeyboardSteeringBrakeLagUpSlowingEffect, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}" Margin="0,2,0,12"/>
 
                         <CheckBox Content="Use custom brake curve" IsChecked="{Binding EnableKeyboardBrakeCurve, Mode=TwoWay}" Margin="0,0,0,4" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}"/>
                         <Button Content="Edit Brake Curve" Command="{Binding OpenBrakeCurveEditorCommand}" Height="26" HorizontalAlignment="Left" Width="140" Margin="0,0,0,12" IsEnabled="{Binding IsKeyboardBrakeSettingsEnabled}"/>

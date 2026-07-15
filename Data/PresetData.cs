@@ -65,6 +65,9 @@ namespace MouseToVJoy.Data
         public double KeyboardThrottleAssistIdleThreshold { get; set; } = 1.0;
         public double KeyboardThrottleAssistDuration { get; set; } = 2.0;
 
+        public double KeyboardSteeringThrottleLagUpSlowingEffect { get; set; } = 20;
+        public double KeyboardSteeringBrakeLagUpSlowingEffect { get; set; } = 20;
+
         public double KeyboardThrottleLimit { get; set; } = 1.0;
         public double KeyboardThrottleScrollSensitivity { get; set; } = 0.05;
         public double KeyboardThrottleScrollResetTime { get; set; } = 1.0;

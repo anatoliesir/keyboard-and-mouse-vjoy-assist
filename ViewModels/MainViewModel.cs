@@ -105,12 +105,15 @@ namespace MouseToVJoy.ViewModels
         private double _keyboardThrottleAssistIdleThreshold = 1.0;
         private double _keyboardThrottleAssistDuration = 2.0;
 
+        private double _keyboardSteeringBrakeLagUpSlowingEffect = 20;
+        private double _keyboardSteeringThrottleLagUpSlowingEffect = 20;
+
         private double _throttleIdleTimer = 0.0;
         private double _throttleAssistActiveTimer = 0.0;
         private bool _wasThrottlePressed = false;
         private double _activeThrottleReduction = 0.0;
 
-        // --- NEW VARIABLES FOR SCROLL ADJUST ---
+        // --- VARIABLES FOR SCROLL ADJUST ---
         private double _keyboardThrottleLimit = 1.0;
         private double _keyboardThrottleScrollSensitivity = 0.05;
         private double _keyboardThrottleScrollResetTime = 1.0;
@@ -146,6 +149,12 @@ namespace MouseToVJoy.ViewModels
         { get => _keyboardThrottleAssistIdleThreshold; set => SetSetting(ref _keyboardThrottleAssistIdleThreshold, Math.Clamp(value, 0.1, 10.0)); }
         public double KeyboardThrottleAssistDuration
         { get => _keyboardThrottleAssistDuration; set => SetSetting(ref _keyboardThrottleAssistDuration, Math.Clamp(value, 0.1, 10.0)); }
+        public double KeyboardSteeringBrakeLagUpSlowingEffect
+        { get => _keyboardSteeringBrakeLagUpSlowingEffect; set => SetSetting(ref _keyboardSteeringBrakeLagUpSlowingEffect, Math.Clamp(value, 0, 50)); }        
+        public double KeyboardSteeringThrottleLagUpSlowingEffect
+        { get => _keyboardSteeringThrottleLagUpSlowingEffect; set => SetSetting(ref _keyboardSteeringThrottleLagUpSlowingEffect, Math.Clamp(value, 0, 50)); }
+
+
 
         // --- NEW PROPERTIES FOR SCROLL ADJUST ---
         public double KeyboardThrottleLimit { get => _keyboardThrottleLimit; set => SetSetting(ref _keyboardThrottleLimit, Math.Clamp(value, 0.01, 1.0)); }
@@ -1160,7 +1169,7 @@ namespace MouseToVJoy.ViewModels
                     target = Math.Clamp(KeyboardThrottleLimit + _throttleScrollOffset, 0.0, 1.0);
                 }
 
-                double lagSeconds = pressed ? KeyboardThrottleLagUpSeconds : KeyboardThrottleLagDownSeconds;
+                double lagSeconds = pressed ? KeyboardThrottleLagUpSeconds + (KeyboardSteeringThrottleLagUpSlowingEffect * KeyboardThrottleLagUpSeconds * steeringFactor) : KeyboardThrottleLagDownSeconds;
                 _keyboardThrottleRawRatio = MoveRatioToward(_keyboardThrottleRawRatio, target, lagSeconds, elapsedSeconds);
 
                 double outputRatio = EnableKeyboardThrottleCurve ? ApplyResponseCurve(_keyboardThrottleRawRatio, KeyboardThrottleCurvePoints) : _keyboardThrottleRawRatio;
@@ -1214,7 +1223,7 @@ namespace MouseToVJoy.ViewModels
                     target = Math.Clamp(KeyboardBrakeLimit + _brakeScrollOffset, 0.0, 1.0);
                 }
 
-                double lagSeconds = pressed ? KeyboardBrakeLagUpSeconds : KeyboardBrakeLagDownSeconds;
+                double lagSeconds = pressed ? KeyboardBrakeLagUpSeconds + (KeyboardSteeringBrakeLagUpSlowingEffect * KeyboardBrakeLagUpSeconds * steeringFactor) : KeyboardBrakeLagDownSeconds;
                 _keyboardBrakeRawRatio = MoveRatioToward(_keyboardBrakeRawRatio, target, lagSeconds, elapsedSeconds);
 
                 double outputRatio = EnableKeyboardBrakeCurve ? ApplyResponseCurve(_keyboardBrakeRawRatio, KeyboardBrakeCurvePoints) : _keyboardBrakeRawRatio;
@@ -1457,6 +1466,8 @@ namespace MouseToVJoy.ViewModels
                 KeyboardThrottleSteeringAssistStrength = KeyboardThrottleSteeringAssistStrength,
                 KeyboardThrottleAssistIdleThreshold = KeyboardThrottleAssistIdleThreshold,
                 KeyboardThrottleAssistDuration = KeyboardThrottleAssistDuration,
+                KeyboardSteeringBrakeLagUpSlowingEffect = KeyboardSteeringBrakeLagUpSlowingEffect,
+                KeyboardSteeringThrottleLagUpSlowingEffect = KeyboardSteeringThrottleLagUpSlowingEffect,
 
                 // New properties mapping
                 KeyboardThrottleLimit = KeyboardThrottleLimit,
@@ -1514,6 +1525,8 @@ namespace MouseToVJoy.ViewModels
             KeyboardThrottleSteeringAssistStrength = settings.KeyboardThrottleSteeringAssistStrength;
             KeyboardThrottleAssistIdleThreshold = settings.KeyboardThrottleAssistIdleThreshold;
             KeyboardThrottleAssistDuration = settings.KeyboardThrottleAssistDuration;
+            KeyboardSteeringBrakeLagUpSlowingEffect = settings.KeyboardSteeringBrakeLagUpSlowingEffect;
+            KeyboardSteeringThrottleLagUpSlowingEffect = settings.KeyboardSteeringThrottleLagUpSlowingEffect;
 
             // Apply new properties (you will need to make sure your PresetSettings object provides these)
             KeyboardThrottleLimit = settings.KeyboardThrottleLimit;
