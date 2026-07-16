@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace MouseToVJoy
+namespace KBMJoyAssist
 {
     /// <summary>
     /// Interaction logic for App.xaml

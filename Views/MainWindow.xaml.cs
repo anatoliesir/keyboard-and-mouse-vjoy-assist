@@ -1,8 +1,8 @@
-﻿using MouseToVJoy.ViewModels;
-using MouseToVJoy.Views;
+﻿using KBMJoyAssist.ViewModels;
+using KBMJoyAssist.Views;
 using System.Windows;
 
-namespace MouseToVJoy
+namespace KBMJoyAssist
 {
     public partial class MainWindow : Window
     {

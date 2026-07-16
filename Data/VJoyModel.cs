@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using MouseToVJoy.Data;
+using KBMJoyAssist.Data;
 
-namespace MouseToVJoy.Data
+namespace KBMJoyAssist.Data
 {
     public class VJoyModel
     {

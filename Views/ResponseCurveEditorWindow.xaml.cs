@@ -1,5 +1,5 @@
-using MouseToVJoy.Data;
-using MouseToVJoy.ViewModels;
+using KBMJoyAssist.Data;
+using KBMJoyAssist.ViewModels;
 using System;
 using System.Linq;
 using System.Windows;
@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace MouseToVJoy
+namespace KBMJoyAssist
 {
     public partial class ResponseCurveEditorWindow : Window
     {

@@ -1,7 +1,7 @@
-﻿<Application x:Class="MouseToVJoy.App"
+﻿<Application x:Class="KBMJoyAssist.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:MouseToVJoy"
+             xmlns:local="clr-namespace:KBMJoyAssist"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <Style x:Key="RoundedButton" TargetType="Button">

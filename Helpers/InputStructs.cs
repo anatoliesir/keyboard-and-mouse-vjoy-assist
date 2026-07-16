@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace MouseToVJoy.Helpers
+namespace KBMJoyAssist.Helpers
 {
     public struct RawMouseData
     {

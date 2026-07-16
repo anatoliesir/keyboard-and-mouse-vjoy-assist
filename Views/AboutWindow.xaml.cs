@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MouseToVJoy.Views
+namespace KBMJoyAssist.Views
 {
     public partial class AboutWindow : Window
     {

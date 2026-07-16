@@ -1,11 +1,11 @@
-﻿<Window x:Class="MouseToVJoy.Views.AboutWindow"
+﻿<Window x:Class="KBMJoyAssist.Views.AboutWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MouseToVJoy.Views"
+        xmlns:local="clr-namespace:KBMJoyAssist.Views"
         mc:Ignorable="d"
-        Title="Help &amp; About - MouseToVJoy" 
+        Title="Help &amp; About - KBMJoyAssist" 
         Height="550" Width="480" 
         Background="#1E1E1E" Foreground="#E0E0E0"
         FontFamily="Segoe UI" ResizeMode="NoResize" WindowStyle="ThreeDBorderWindow">
@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
 
         <!-- Title -->
-        <TextBlock Grid.Row="0" Text="MouseToVJoy Application" FontSize="22" FontWeight="Bold" Foreground="#00ADB5" Margin="0,0,0,15"/>
+        <TextBlock Grid.Row="0" Text="KBMJoyAssist Application" FontSize="22" FontWeight="Bold" Foreground="#00ADB5" Margin="0,0,0,15"/>
 
         <!-- Scrollable Content -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,15">
@@ -26,13 +26,13 @@
 
                 <!--Important-->
                 <TextBlock Text="Important:" FontSize="14" FontWeight="Bold" Foreground="#00ADB5" Margin="0,0,0,5"/>
-                <TextBlock Text="To make this program work, you need to instal vJoy!! Go on my github repository(github.com/anatoliesir/mouse-and-keyboard-to-vjoy), and find the BrunnerInnovation release link." 
+                <TextBlock Text="To make this program work, you need to instal vJoy!! Go on my github repository(github.com/anatoliesir/keyboard-and-mouse-vjoy-assist), and find the BrunnerInnovation release link." 
                             TextWrapping="Wrap" LineHeight="18" Foreground="#CCCCCC" Margin="0,0,0,15"/>
 
                 <Separator Background="#333333" Margin="0,0,0,15"/>
                 <!-- Description -->
                 <TextBlock Text="Description" FontSize="14" FontWeight="Bold" Foreground="#00ADB5" Margin="0,0,0,5"/>
-                <TextBlock Text="MouseToVJoy is an application designed to emulate a virtual joystick (vJoy) using mouse movements and keyboard inputs. It provides smooth and progressive control, making it ideal for simracing games where steering precision is critical." 
+                <TextBlock Text="KBMJoyAssist is an application designed to emulate a virtual joystick (vJoy) using mouse movements and keyboard inputs. It provides smooth and progressive control, making it ideal for simracing games where steering precision is critical." 
                            TextWrapping="Wrap" LineHeight="18" Foreground="#CCCCCC" Margin="0,0,0,15"/>
 
                 <Separator Background="#333333" Margin="0,0,0,15"/>

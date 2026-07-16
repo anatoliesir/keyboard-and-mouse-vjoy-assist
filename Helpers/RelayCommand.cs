@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
-using MouseToVJoy.Helpers;
+using KBMJoyAssist.Helpers;
 
-namespace MouseToVJoy.Helpers
+namespace KBMJoyAssist.Helpers
 {
     public class RelayCommand : ICommand
     {

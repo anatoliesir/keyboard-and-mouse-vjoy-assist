@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using MouseToVJoy.Data;
+using KBMJoyAssist.Data;
 
-namespace MouseToVJoy.ViewModels
+namespace KBMJoyAssist.ViewModels
 {
     public class PresetSlotViewModel : INotifyPropertyChanged
     {

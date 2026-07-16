@@ -1,5 +1,5 @@
-﻿using MouseToVJoy.Data;
-using MouseToVJoy.Helpers;
+﻿using KBMJoyAssist.Data;
+using KBMJoyAssist.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -13,7 +13,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 
-namespace MouseToVJoy.ViewModels
+namespace KBMJoyAssist.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
@@ -53,34 +53,34 @@ namespace MouseToVJoy.ViewModels
         private double _wheelSensitivity = 0.1;
         private bool _enableThrottle = true;
         private bool _enableBrake = true;
-        private bool _enableKeyboardThrottle;
-        private bool _enableKeyboardBrake;
+        private bool _enableKeyboardThrottle = true;
+        private bool _enableKeyboardBrake = true;
         private string _keyboardThrottleKey = "W";
         private string _keyboardBrakeKey = "S";
-        private double _keyboardThrottleLagUpSeconds = 0.20;
-        private double _keyboardThrottleLagDownSeconds = 0.15;
-        private double _keyboardBrakeLagUpSeconds = 0.08;
+        private double _keyboardThrottleLagUpSeconds = 0.6;
+        private double _keyboardThrottleLagDownSeconds = 0.4;
+        private double _keyboardBrakeLagUpSeconds = 0.3;
         private double _keyboardBrakeLagDownSeconds = 0.20;
         private bool _enableKeyboardResponseCurve;
-        private string _keyboardResponseCurvePoints = "0,0;0.25,0.15;0.5,0.5;0.75,0.85;1,1";
+        private string _keyboardResponseCurvePoints = "0,0;0.05,0.005;0.1,0.015;0.15,0.03;0.2,0.05;0.3,0.1;0.4,0.18;0.5,0.3;0.6,0.45;0.7,0.62;0.8,0.8;0.9,0.93;1,1";
         private bool _enableWheelCentering;
         private double _wheelReturnTimeSeconds = 20.95;
         private bool _enableRightClickPedalMode = true;
-        private bool _enableCenterLockedCursor;
-        private bool _enableFullThrottleHold = true;
+        private bool _enableCenterLockedCursor = true;
+        private bool _enableFullThrottleHold = false;
         private double _fullThrottleHoldDeadzone = 0.01;
         private bool _enableSteeringDampening = true;
         private double _steeringDampening = 0.20;
-        private bool _enableBrakeAssist = true;
+        private bool _enableBrakeAssist = false;
         private double _brakeAssistThreshold = 0.70;
         private double _brakeAssistStrength = 0.35;
-        private bool _enableBrakeXDeadzone = true;
+        private bool _enableBrakeXDeadzone = false;
         private double _brakeXDeadzone = 0.04;
-        private bool _enableTimedBrakeXDeadzone = true;
+        private bool _enableTimedBrakeXDeadzone = false;
         private double _brakeXDeadzoneDurationSeconds = 0.05;
         private double _brakeXDeadzoneRemainingSeconds;
-        private bool _brakeXDeadzoneArmed = true;
-        private bool _enableTrailBraking = true;
+        private bool _brakeXDeadzoneArmed = false;
+        private bool _enableTrailBraking = false;
         private double _trailBrakingRelease = 0.06;
         private double _brakeAssistHold = 0.0;
         private DateTime _lastIdleTickUtc = DateTime.UtcNow;
@@ -97,16 +97,16 @@ namespace MouseToVJoy.ViewModels
         private bool _enableKeyboardBrakeCurve;
         private string _keyboardBrakeCurvePoints = PresetSettings.DefaultResponseCurvePoints;
 
-        private bool _enableKeyboardBrakeSteeringAssist;
+        private bool _enableKeyboardBrakeSteeringAssist = true;
         private double _keyboardBrakeSteeringAssistStrength = 0.50;
 
-        private bool _enableKeyboardThrottleSteeringAssist;
+        private bool _enableKeyboardThrottleSteeringAssist = true;
         private double _keyboardThrottleSteeringAssistStrength = 0.50;
         private double _keyboardThrottleAssistIdleThreshold = 1.0;
         private double _keyboardThrottleAssistDuration = 2.0;
 
-        private double _keyboardSteeringBrakeLagUpSlowingEffect = 20;
-        private double _keyboardSteeringThrottleLagUpSlowingEffect = 20;
+        private double _keyboardSteeringBrakeLagUpSlowingEffect = 15;
+        private double _keyboardSteeringThrottleLagUpSlowingEffect = 10;
 
         private double _throttleIdleTimer = 0.0;
         private double _throttleAssistActiveTimer = 0.0;
@@ -193,7 +193,7 @@ namespace MouseToVJoy.ViewModels
             _vJoyModel = new VJoyModel();
             _presetFilePath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "MouseToVJoy",
+                "KBMJoyAssist",
                 "presets.json");
 
             StartCommand = new RelayCommand(ExecuteStart, CanExecuteStart);

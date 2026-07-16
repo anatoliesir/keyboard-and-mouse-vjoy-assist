@@ -33,6 +33,6 @@ If you want to start with a fully tested and optimized configuration for keyboar
 
 1. Download the `presets.json` file from the `presets-examples` folder in this repository.
 2. Press `Win + R` on your keyboard, type `%appdata%` and hit Enter.
-3. Look for the `MouseToVJoy` folder.
+3. Look for the `KBMJoyAssist` folder.
 4. Paste the downloaded `presets.json` file inside that folder, overwriting the existing one.
 5. Restart the application and enjoy the optimized curves!
