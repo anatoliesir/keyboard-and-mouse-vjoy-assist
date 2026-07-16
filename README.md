@@ -1,6 +1,6 @@
-# MouseAndKeyboardToVJoy
+# KeyboardAndMouseVJoyAssist
 This project has the scope to improve a keyboard and mouse's player experience when SimRacing.\
-It was officially tested on **'Assetto Corsa'**, so it is not guaranteed that it will help on other sim racing games.\
+It was officially tested on **'Assetto Corsa'**, so it is not guaranteed that it will help on other sim racing games.
 ## Where can I watch how it works?
 [****Testing Video Here!****](https://youtu.be/_UKZzitJnb8?si=esQda0_WaPPVg00m)
 
